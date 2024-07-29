@@ -213,3 +213,133 @@ class XXPromise {
 }
 ```
 
+catch,finally方法, 类方法resovle, reject
+
+```js
+const PROMISE_STATUS_PENDING = 'pending'
+const PROMISE_STATUS_FULFILLED = 'fulfilled'
+const PROMISE_STATUS_REJECTED = 'rejected'
+
+function execFunctionWithCatchError(execFn,value,resolve,reject) {
+    try {
+        const result = execFn(value)
+        resolve(result)
+    }catch(err) {
+        reject(err)
+    }
+}
+
+class XXPromise {
+    constructor(executor) {
+        this.status = PROMISE_STATUS_PENDING
+        this.value = undefined
+        this.reason = undefined
+        this.onFulfilledFns = []
+        this.onRejectedFns = []
+        
+        const resolve = (reason) => {
+         	if(this.status === PROMISE_STATUS_PENDING)    {
+                queueMicrotaks ( () => {
+                if(this.staus !== PROMISE_STATUS_PENDING) return 
+                this.status = PROMISE_STATUS_FULFILLED
+                this.value = value
+                this.onFulfiiledFns.forEach( fn => {
+                    fn(this.value)
+                })
+                })          
+            }
+        }
+        
+        const reject = (reason) => {
+            if(this.status === PROMISE_STATUS_PENDING) {
+         	queueMicrotask( () => {
+                if(this.status !== PROMISE_STATUS_PENDING) return
+                this.status = PROMISE_STATUS_REJECTED
+                this.reason = reaon
+                this.onRejectedFns.forEach( fn => {
+                    fn(this.reason)
+                })
+            })       
+            }
+        }
+        
+        try {
+        executor(resolve,reject)
+        } catch(err) {
+            reject(err)
+        }
+    }
+    
+    then(onFulfilled,onRejected) { 
+        const defaultOnRejected = err => { throw err}
+        onRejected = onRejected || defaultOnRejected
+        
+        return new XXPromise( (resolve,reject) => {
+            if(this.status === PROMISE_STATUS_FULFILLED && onFulfilled) {
+                execFunctionWithCatchError(onFulfilled,this.value,resovle,reject)
+            }
+            if(this.status === PROMISE_STATUS_REJECTED && onRejected) {
+                execFunctionWithCatchError（onRejected,this.reason,resolve,reject)
+            }
+            
+            if(this.status === PROMISE_STATUS_PENDING) {
+                if(onFufilled) this.onFulfilledFns.push( () => {
+                    execFunctionWithCatchError(onFulfilled,this.value,resovle,reject)
+                })
+                if(onRejected) this.onRejectedFns.push( () => {
+                    execFunctionWithCatchError(onRejected,this.reason,resolve, reject)
+                })
+            }
+        })
+    }
+    
+    catch(onRejected) {
+        this.then(undefined,onRejected)
+    }
+    
+    finally(onFinally) {
+    this.then( () => {
+        onFinally()
+    }, () => {
+        onFinally()
+    })    
+    }
+    
+    static resovle(value){
+        return new XXPromise( (resolve) => resovle(value))
+    }
+    
+    static reject(reason) {
+        return new XXPromise( (resolve,reject) => reject(reason))
+    }
+    
+    
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
