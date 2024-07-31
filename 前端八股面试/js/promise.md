@@ -456,6 +456,28 @@ class XXPromise {
             }
         })
     }
+    
+    static any(promises) {
+        const reasons =[] 
+        return new XXPromise( (ressolve,reject) => {
+            promises.forEach( promise => {
+                promise.then( resolve,err => {
+                    reasons.push(err)
+                    if(reasons.length === promises.length) {
+                        reject(new AggregateError(reasons))
+                    }
+                })
+            })
+        })
+    }
+    
+    static race(promises) {
+        return new XXPromise( (resolve,reject) => {
+            promises.forEach(promise => {
+                promise.then(resolve,reject)
+            })
+        })
+    }
 }
 ```
 
