@@ -18,3 +18,22 @@
    3. 渲染器
 
    
+
+## React工作循环
+
+- 任务调度循环
+- fiber构造循环
+
+## 
+
+## React应用中的高频对象
+
+- react包
+- ReactElement对象
+- ReactComponent对象
+- react-reconciler包
+- Fiber对象： 代表即将渲染或者已经渲染的组件
+- Update与UpdateQueue对象
+- Hook对象
+- scheduler包
+
