@@ -37,3 +37,18 @@
 - Hook对象
 - scheduler包
 
+
+
+## React应用的启动过程
+
+- legacy模式
+- blocking模式
+- concurrent模式
+
+启动流程
+
+- 创建全局对象
+- 创建React DomRoot对象
+- 创建fiberRoot对象
+- 创建HostRootFiber对象
+
