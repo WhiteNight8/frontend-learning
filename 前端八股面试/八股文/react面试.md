@@ -126,43 +126,121 @@ React18后都是异步的了，但在并发模式下，setState更新被进一�
 
 ## React中setState的批量更新过程具体是如何实现的
 
+通过合并状态更新来优化性能，减少多次不必要的渲染
+
 
 
 ## React的生命周期包括哪些阶段，每个阶段有哪些方法
+
+挂载阶段
+
+- constructor
+- render
+- componentDidMount
+
+更新阶段
+
+- shouldCompoentUpdate
+- render
+- componentDidUpdate
+
+卸载阶段
+
+- componentWillUnmount
 
 
 
 ## 在React的哪个生命周期阶段可以进行性能优化，这种优化的原理是什么
 
+shouldComponentUpdate
+
+浅层对比新旧props，state，可以避免不必要的渲染
+
+PureComponent
+
 
 
 ## 什么是React的严格模式，有什么作用
+
+一种在开发阶段识别潜在问题的一种工具，确保符合未来React的最佳实践
 
 
 
 ## React中的组件间通信的方式有哪些？各适用于什么场景
 
+- props父子组件通信
+- 回调props子父通信
+- 状态提升兄弟组件
+- context API
+- 全局状态管理 Redux等
+- 事件总线
+
 
 
 ## React-Router的实现原理是什么， 他是如何在React应用中管理应用的
+
+核心原理是通过监听URL的变化，动态渲染与当前路径匹配的组件，从而实现单页面中的路由管理
+
+- History API
+- 路由匹配机制
+- 动态渲染组件
+- 嵌套路由
 
 
 
 ## 对Redux的理解是什么。主要解决了什么问题
 
+管理应用状态的JavaScript库，主要解决了复杂应用中组件之间共享和管理状态的难题
+
+- 状态管理的复杂性
+- 可预测的状态流
+- 调试难度
+- 状态同步
+
 
 
 ## Redux的工作原理及流程是怎么样的
+
+工作原理
+
+- 全局状态管理
+- 单项数据流
+
+核心流程
+
+- 初始化应用
+- 组件发出action
+- reducer处理action
+- store更新状态
+- 通知订阅者
 
 
 
 ## 在Redux中，异步请求应该如何处理， Redux中间件是什么，如何编写Redux中间件
 
+中间件是一段在dispatch被发出和达到热度二之前执行的代码，作用是增强dispatch的功能，使其能够处理异步操作或者其他副作用
+
+编写步骤
+
+- 接受store作物参数
+- 返回next函数
+- 返回action处理函数
+- 合适时机调用next
+
+
+
 
 
 ## Redux状态管理器与全局对象来保存数据有什么不同
 
+- 单项数据流
+- 状态不可变性
+- 中间件的处理和异步操作
+- 可预测性和调试
+- 状态的组织和模块化
+- 数据流和同步
 
+redux提供了结构化的状态管理框架，使得状态的更新过程透明，可预测，并且状态管理逻辑集中可扩展
 
 
 
