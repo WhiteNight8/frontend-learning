@@ -244,3 +244,51 @@ redux提供了结构化的状态管理框架，使得状态的更新过程透明
 
 
 
+## redux与mobx，vuex有什么区别，，共有的设计思想是什么，如何选择
+
+
+
+## 什么是react hooks，为什么引入
+
+
+
+## useState和类组件的state有什么区别
+
+
+
+## 自定义hook是什么，如何创建自定义hook
+
+
+
+## 解释useCallback和useMemo的区别和使用场景
+
+
+
+## 描述useEffect和useLayoutEffect的不同以及使用场景
+
+
+
+## 使用react hooks时需要遵守哪些规则和限制
+
+
+
+## 解释React如何追踪Hook的状态，hooks的原理是什么
+
+
+
+## 什么是react fiber，它如何改善了react应用的性能
+
+
+
+## 在react fiber中，什么是fiber节点，它如何与传统的虚拟DOM元素相比
+
+
+
+## React fiber的协调算法与之前有什么不同
+
+
+
+
+
+
+
