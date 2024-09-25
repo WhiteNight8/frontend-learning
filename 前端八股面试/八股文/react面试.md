@@ -1,15 +1,24 @@
 # react18核心源码
 
 - react fiber架构
+
 - concurrent mode并发模式
+
 - scheduler调度器
+
 - automatic batching自动批处理
+
 - suspense lazy loading
+
 - hook system
+
 - reconcliation 协调算法
+
 - server components服务器组件
+
 - 服务端渲染
-- 
+
+  
 
 # redux核心源码
 
