@@ -2,21 +2,46 @@
 
 - react fiber架构
 
-- concurrent mode并发模式
+  1. Fiber节点： 每个react元素对应一个Fiber节点，是一个轻量级的JavaScript对象，保存了组件的类型，状态，子组件引用等信息。 Fiber节点用于表示虚拟DOM树的每一层
+  2. 双缓存机制： FIber架构采用双换从技术，将虚拟DOM树分为两部分， current fiber tree，当前已经渲染的fiber树； work-in-progress fiber tree 正在构建的fiber树，渲染完成后两种进行替换
+  3. 异步可中断渲染： fiber允许将渲染任务分片，处理过程可以暂停，继续，取消， 以响应高优先级 任务，通过调度机制实现
+  4. 优先级调度： React为不同任务分配优先级， 高优先级任务，输入，点击等； 低优先级任务，DOM更新，动画渲染
 
-- scheduler调度器
+- React核心模块
 
-- automatic batching自动批处理
+  1. React Core 提供核心API ，负责定义组件和元素的基本行为
+  2. React Reconciler： 负责比较当前fiber树与新生成虚拟DOM的节点差异，决定需要更新的部分； 更新策略： 采用单节点更细和树形结构复用
+  3. React Renderer： 将虚拟DOM映射到特定平台，React DOM，负责将fiber树转化为真实的DOM树
+  4. React Scheduler： 任务切片： 将大任务分为多个小任务，避免阻塞主线程； concurrent mode： 启用并发渲染， 提高性能和用户体验
 
-- suspense lazy loading
+- React 核心原理
 
-- hook system
+  1. 虚拟DOM： 通过虚拟DOM抽象真实DOM操作， 提升性能
+  2. Reconciliation 协调： 核心是diff算法
+  3. fiber的工作流程： render阶段：生成新的fiber树，找出需要更新的部分，异步可中断； commit阶段： 将更新应用到真实的DOM，同步的，before mutation， mutation，layout
+  4. 事件机制：React的事件系统是基于SyntheticEvent实现的： 合成事件； 事件代理
+  5. 调度机制： 优先级分类； 调度算法
 
-- reconcliation 协调算法
+- React核心源码分析
 
-- server components服务器组件
+  1. 初始化渲染： 创建fiber根节点； 调用sheduleUpdateOnFiber，将更新任务放入调度队列； 开始调度工作，执行fiber构建
+  2. setState原理： 生成更新对象；将更新对象放入更新队列； 标记fiber节点为需要更新，并触发调度器； 进入协调阶段，构建新的fiber树； 进入提交阶段，更新真实DOM
 
-- 服务端渲染
+  
+
+  React.createElement: JSX到虚拟DOM的转换
+
+  ReactFiber: fiber节点定义与构建逻辑
+
+  ReactReconciler： 协调逻辑和diff算法
+
+  ReactDom： 虚拟DOM到真实DOM的映射
+
+  Scheduler: 调度器的实现
+
+  
+
+  
 
   
 
