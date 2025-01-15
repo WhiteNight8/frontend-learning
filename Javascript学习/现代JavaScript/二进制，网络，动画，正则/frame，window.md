@@ -106,3 +106,35 @@ onmessage
 
 
 
+
+
+## 点击劫持
+
+点击劫持攻击允许恶意页面以用户的名义点击受害网站
+
+### 原理
+
+点击劫持时对点击事件，而非键盘事件
+
+### 传统防御
+
+禁止在iframe打开页面
+
+### 阻止顶级导航
+
+onbeforeunload
+
+### Sandbox特性
+
+可以放开限制
+
+### X-Frame-Options
+
+服务端header，可以允许或者禁止在iframe中显示页面
+
+### 显示禁用的功能
+
+### Samesite cookie 特性
+
+
+
