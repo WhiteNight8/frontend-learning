@@ -107,3 +107,27 @@ then中所使用的处理程序可以创建并返回一个promise
 通常被用于网络请求
 
 ![image-20250326081318582](C:/Users/27019/AppData/Roaming/Typora/typora-user-images/image-20250326081318582.png)
+
+
+
+
+
+## 使用promise进行错误处理
+
+当一个promise被reject时， 控制权将移交到最近的rejection处理程序
+
+
+
+### 隐式try catch
+
+promise的executor和promise处理程序周围有个隐式的try catch，如果发生异常，就会被捕获，并被视为rejection进行处理
+
+
+
+### 再次抛出
+
+无法处理error，可以将其再次抛出
+
+### 未处理的rejection
+
+如果出现了error，并且没有在catch，那么unhandledrejection处理程序就会触发，并且获取具有error相关信息的event对象，就可以进行后续处理
