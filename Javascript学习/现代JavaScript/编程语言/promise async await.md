@@ -87,3 +87,23 @@ finally与then(f,f)的区别
 **promise非常灵活，可以所处添加处理程序，如果结果已经在了，它们就会执行**
 
 ![image-20250325105553662](https://raw.githubusercontent.com/JoeyXXia/MyPictureData/main/image-20250325105553662.png)
+
+
+
+
+
+## Promise链
+
+从技术上讲，可以将多个then添加到一个promise上，但是这不是promise链
+
+
+
+### 返回promise
+
+then中所使用的处理程序可以创建并返回一个promise
+
+### fetch
+
+通常被用于网络请求
+
+![image-20250326081318582](C:/Users/27019/AppData/Roaming/Typora/typora-user-images/image-20250326081318582.png)
