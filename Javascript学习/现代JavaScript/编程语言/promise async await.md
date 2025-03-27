@@ -131,3 +131,54 @@ promise的executor和promise处理程序周围有个隐式的try catch，如果�
 ### 未处理的rejection
 
 如果出现了error，并且没有在catch，那么unhandledrejection处理程序就会触发，并且获取具有error相关信息的event对象，就可以进行后续处理
+
+
+
+## Promise API
+
+## promise.all
+
+接受一个可迭代对象，并返回一个新的promise
+
+结果数组中元素的顺序与源promise中的顺序相同
+
+**如果任意一个promise被reject，由Promise.all返回的promise就会立即reject，并且带有的就是这个error**
+
+如果出现error，其他promise将被忽略
+
+promise.all没有取消的概念
+
+允许使用非promise值，将被原样返回
+
+
+
+### Promise.allSettled
+
+获取所有给定的promise的结果，即使其中一些被reject
+
+
+
+### Promise.race
+
+等待第一个settled的promise并获取结果或者error
+
+
+
+### Promise.any
+
+与race类似，但是any只等待第一个fulfilled的promise
+
+如果都rejected，那么返回的promise会带有AggregateError
+
+
+
+### Promise.resolve/reject
+
+使用给定的value/error，闯将一个resolved/ rejected的promise
+
+
+
+
+
+
+
