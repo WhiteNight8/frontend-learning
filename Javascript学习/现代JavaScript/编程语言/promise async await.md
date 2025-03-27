@@ -180,5 +180,15 @@ promise.all没有取消的概念
 
 
 
+## Promisification
+
+指的是将一个接受回调的函数转换为返回promise的函数
+
+一个promise可能只有一个结果，但是一个回调可能被调用很多次
+
+
+
+
+
 
 
