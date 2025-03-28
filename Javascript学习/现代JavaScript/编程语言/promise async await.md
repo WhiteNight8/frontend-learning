@@ -213,5 +213,37 @@ promise的处理程序then，catch，finally都是异步的
 
 
 
+## async/await
+
+一种更舒适的方式使用promise
+
+### async function
+
+async表达这个函数总是返回一个promise，其他值将自动被包装在一个resolved的promise中
+
+
+
+### await
+
+await让JavaScript引擎等待直到promise完成并返回结果
+
+不能在普通函数中使用await
+
+现代浏览器在modules里允许顶层await
+
+
+
+### Error处理
+
+如果有error，就会抛出异常，就像那里调用了throw error一样
+
+
+
+
+
+
+
+
+
 
 
