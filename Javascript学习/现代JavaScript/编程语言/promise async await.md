@@ -190,5 +190,28 @@ promise.all没有取消的概念
 
 
 
+## 微任务
+
+promise的处理程序then，catch，finally都是异步的
+
+
+
+### 微任务队列
+
+异步任务需要适当的管理，ECMA标准规定了一个内部队列PromiseJobs
+
+- 队列是先进先出的
+- 只有在JavaScript引擎中没有其他任务在运行时，才开始执行任务队列中的任务
+
+
+
+### 未处理的rejection
+
+如果一个promise的error未被在微任务队列的末尾进行处理，则会出现未处理的rejection
+
+
+
+
+
 
 
