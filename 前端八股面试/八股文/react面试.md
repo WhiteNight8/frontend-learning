@@ -487,5 +487,221 @@ fiber是虚拟DOM的增强版，不仅描述了UI结构，还记录了组件的�
 
 
 
+# 1. React Fiber 架构的设计理念及其解决的问题
+
+React Fiber 是 React 16 引入的一种新的内部重构，它的核心设计理念是实现增量渲染，使渲染过程可中断且可恢复。
+
+## 设计理念
+
+1. **增量渲染**: 将渲染工作分割成小块，可以分散到多个帧中执行
+2. **优先级**: 不同类型的更新可以分配不同的优先级
+3. **可中断与恢复**: 渲染过程可被更高优先级的任务中断，稍后再恢复
+4. **复用与回退**: 能够复用之前的工作成果，必要时可以丢弃已完成的工作
+
+## 解决的问题
+
+1. **长时间任务阻塞主线程**: 在 React 15 及之前，一旦开始渲染过程就不能中断，导致大型组件树渲染时可能阻塞主线程，影响用户交互和动画流畅度
+2. **不同任务间缺乏优先级区分**: 无法区分高优先级（如用户输入）和低优先级（如数据更新后的界面重绘）任务
+3. **同步渲染的局限性**: 递归同步渲染模式限制了异步渲染的可能性
+
+Fiber 架构通过重新实现核心算法，创建了一个可中断的渲染更新流程，解决了上述问题，提高了应用性能和用户体验。
+
+
+
+# 2. 深入分析 Fiber 协调过程：reconciliation 与 commit 阶段详解
+
+Fiber 协调过程分为两个主要阶段：协调阶段(Reconciliation/Render Phase)和提交阶段(Commit Phase)。
+
+## 协调阶段 (Reconciliation/Render Phase)
+
+这个阶段是可中断的，主要工作包括：
+
+1. **创建 Fiber 节点**: 为组件创建对应的 Fiber 节点，构建 Fiber 树
+2. **对比差异(Diffing)**: 对比当前 Fiber 树与上一次渲染的 Fiber 树的差异
+3. **收集副作用(Effects)**: 标记需要进行DOM操作的节点
+4. **调度工作**: 根据优先级调度后续工作
+
+关键函数:
+
+- `beginWork()`: 从父到子，创建 Fiber 节点并构建树
+- `completeWork()`: 从子到父，完成节点处理，收集副作用
+
+## 提交阶段 (Commit Phase)
+
+这个阶段是不可中断的，一次性完成，主要工作包括：
+
+1. **执行前置操作**: 处理类组件的 `getSnapshotBeforeUpdate` 生命周期
+2. **DOM变更**: 根据协调阶段收集的副作用，执行DOM操作(插入、更新、删除)
+3. **执行后置操作**: 运行生命周期方法和Hooks副作用函数
+
+关键函数:
+
+- `commitBeforeMutationEffects()`: 执行DOM变更前的操作
+- `commitMutationEffects()`: 执行DOM变更
+- `commitLayoutEffects()`: 执行DOM变更后的操作
+
+整个过程采用双缓冲技术，`current`树代表当前屏幕显示的状态，而`workInProgress`树是正在构建的新状态。完成后，两者角色互换，确保渲染过程的一致性。
+
+# 3. React 调度器 (Scheduler) 的实现原理及优先级管理机制
+
+React 调度器是 Fiber 架构的核心部分，负责管理和执行工作单元。
+
+## 实现原理
+
+1. **任务队列**: 维护多个优先级任务队列
+2. **时间切片**: 使用`requestIdleCallback`或其 polyfill 实现时间切片
+3. **任务中断与恢复**: 根据剩余时间决定是否中断当前任务
+4. **任务优先级**: 根据不同的更新类型分配不同的优先级
+
+## 优先级管理机制
+
+React 调度器定义了几种优先级级别：
+
+1. **Immediate**: 最高优先级，同步执行，不会被打断
+2. **UserBlocking**: 用户交互触发的更新，如点击、输入（250ms 超时）
+3. **Normal**: 普通优先级，如网络请求后的数据更新（5000ms 超时）
+4. **Low**: 低优先级，可延迟的任务（10000ms 超时）
+5. **Idle**: 最低优先级，闲置时才执行，无超时
+
+调度器会根据任务优先级和过期时间决定下一个执行的任务。高优先级任务可以打断正在进行的低优先级任务，被中断的任务会在之后继续执行。
+
+核心机制:
+
+- **时间分片**: 将长任务分成小片段执行，每个时间片大约 5ms
+- **任务排序**: 按照优先级和过期时间对任务进行排序
+- **任务饥饿预防**: 低优先级任务也有超时机制，防止一直得不到执行
+
+# 4. 从源码角度解析时间分片 (Time Slicing) 的实现方式
+
+时间分片是 React Fiber 架构的核心特性，它使 React 能够将渲染工作分割到多个帧中。
+
+## 实现原理
+
+1. **工作循环**: React 使用`workLoop`函数实现主工作循环
+
+javascript
+
+```javascript
+function workLoop(deadline) {
+  let shouldYield = false;
+  while (nextUnitOfWork && !shouldYield) {
+    nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+    shouldYield = deadline.timeRemaining() < 1;
+  }
+  
+  if (!nextUnitOfWork && workInProgressRoot) {
+    // 完成所有工作，进入提交阶段
+    commitRoot();
+  }
+  
+  // 安排下一次工作
+  requestIdleCallback(workLoop);
+}
+```
+
+1. **时间片检查**: 通过检查剩余时间决定是否中断当前工作
+
+javascript
+
+```javascript
+shouldYield = deadline.timeRemaining() < 1;
+```
+
+1. **任务调度**: 使用 `requestIdleCallback` 或自定义的 scheduler 实现
+
+javascript
+
+```javascript
+// React 的 scheduler polyfill 简化版
+const scheduler = window.requestIdleCallback || function(callback) {
+  const start = Date.now();
+  return setTimeout(() => {
+    callback({
+      didTimeout: false,
+      timeRemaining: () => Math.max(0, 50 - (Date.now() - start))
+    });
+  }, 1);
+};
+```
+
+1. **Fiber 节点处理**: 每个 Fiber 节点作为一个工作单元，可以独立处理
+
+javascript
+
+```javascript
+function performUnitOfWork(fiber) {
+  // 处理当前 fiber
+  // ...
+  
+  // 返回下一个工作单元
+  if (fiber.child) {
+    return fiber.child;
+  }
+  
+  let nextFiber = fiber;
+  while (nextFiber) {
+    if (nextFiber.sibling) {
+      return nextFiber.sibling;
+    }
+    nextFiber = nextFiber.return;
+  }
+  
+  return null;
+}
+```
+
+通过这种实现，React 能够在每一帧的空闲时间内执行一部分渲染工作，当没有足够时间时主动让出控制权，确保主线程不被长时间占用，提高应用的响应性。
+
+# 5. 并发模式 (Concurrent Mode) 的内部机制及其应用场景
+
+并发模式是 React 的一个实验性功能，在 React 18 中正式发布。它基于 Fiber 架构，进一步增强了 React 的并发处理能力。
+
+## 内部机制
+
+1. **并发渲染**: 允许多个渲染任务同时存在，根据优先级切换
+2. **选择性暂停**: 可以暂停低优先级任务，优先完成高优先级任务
+3. **后台预渲染**: 在后台预渲染低优先级内容，不阻塞用户交互
+4. **可中断渲染**: 一个渲染过程可以被打断并稍后恢复
+5. **可丢弃渲染**: 进行中的渲染可以被丢弃，用新的渲染替代
+
+核心 API:
+
+- `startTransition`: 标记非紧急更新
+- `useTransition`: Hook 版本，提供 pending 状态
+- `useDeferredValue`: 延迟处理某个值的变化
+
+## 应用场景
+
+1. **数据交互界面**: 在保持界面响应的同时处理大量数据
+2. **搜索和过滤**: 在用户输入时不阻塞界面
+3. **分页加载**: 在加载下一页数据时保持当前页面的交互性
+4. **大型表单**: 在复杂表单中保持输入流畅
+5. **动画过渡**: 在数据更新时提供流畅的过渡效果
+
+使用示例:
+
+javascript
+
+```javascript
+function SearchResults({ query }) {
+  const [isPending, startTransition] = useTransition();
+  const [results, setResults] = useState([]);
+  
+  function handleChange(e) {
+    // 紧急更新：更新输入框
+    const value = e.target.value;
+    
+    // 非紧急更新：搜索结果计算
+    startTransition(() => {
+      setResults(searchData(value));
+    });
+  }
+  
+  // ...
+}
+```
+
+并发模式让 React 应用在处理复杂交互和大量数据时保持流畅，提高用户体验。
+
 
 
