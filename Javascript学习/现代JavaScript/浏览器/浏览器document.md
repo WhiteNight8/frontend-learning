@@ -114,3 +114,56 @@ querySelectorAll返回的是一个静态的集合
 
 
 
+## 节点属性：type，tag，content
+
+### DOM节点类
+
+- EventTarget
+- Node
+- Document
+- CharacterData
+- Element
+- HTMLElement
+
+### nodeType属性
+
+数值
+
+### 标签：nodeName和tagName
+
+标签名始终是大写的
+
+### innerHtml：内容
+
+脚本不会执行
+
+### inner HTML+= 会进行完全重写
+
+### outerHTML：元素完整HTML
+
+在DOM中替换，不会改变元素
+
+### nodeValue/data：文本节点内容
+
+### textContent：纯文本
+
+### hidden属性
+
+
+
+## 特性和属性
+
+### DOM属性
+
+### HTML特性
+
+### 属性-特性同步
+
+### DOM属性是多类型的
+
+### 非标砖的特性，dataset
+
+
+
+
+
