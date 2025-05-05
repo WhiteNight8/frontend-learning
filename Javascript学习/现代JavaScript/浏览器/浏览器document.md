@@ -165,5 +165,120 @@ querySelectorAll返回的是一个静态的集合
 
 
 
+## 修改文档
+
+DOM修改时创建实时页面的关键
+
+### 创建一个元素
+
+- createElement
+- createTextNode
+
+### 创建一条消息
+
+### 插入方法
+
+- append
+- prepend
+- before
+- after
+- replaceWith
+
+### insertAdjacentHTML/Text/Element
+
+### 节点移除
+
+### 克隆节点：cloneNode
+
+### DocumentFragment
+
+用来传递节点的包装器
+
+### 老式insert/remove方法
+
+
+
+## 样式和类
+
+- 在css中创建一个类
+- 将属性直接写入style
+
+### className和classList
+
+### 元素样式
+
+### 重置样式属性
+
+### 注意单位
+
+### 计算样式：getComputedStyle
+
+- 需要完整的属性名
+- 应用于：：visited链接的样式被隐藏了
+
+
+
+## 元素大小和滚动
+
+注意滚动条
+
+### 几何
+
+![image-20250505110403358](https://raw.githubusercontent.com/JoeyXXia/MyPictureData/main/image-20250505110403358.png)
+
+### offsetParent，offsetLeft/Top
+
+### offsetWidth/Height
+
+### clientTop/Left
+
+### clientWidth/Height
+
+### scrollWidth/Height
+
+### scrollLeft/scrollTop
+
+
+
+### 不要从CSS中获取width/height
+
+
+
+## Window大小和滚动
+
+### 窗口的width/height
+
+- document.documentElement.clientWidth
+- document.documentElement.clientHeight
+
+### 文档的wdth/height
+
+### 获取当前滚动
+
+### 滚动：scrollTo，scrollBy，scrollIntoView
+
+### 禁止滚动
+
+
+
+## 坐标
+
+- 相对于窗口
+- 相对于文档
+
+
+
+### 元素坐标：getBoundingClientRect
+
+### elementFromPoint（x，y）
+
+### 用于fixed定位
+
+### 文档坐标
+
+
+
+
+
 
 
