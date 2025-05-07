@@ -2,6 +2,10 @@
 
 1. ### 详细分析 Vue 3 的响应式系统原理，从源码⻆度解释 reactive  ref，和computed的实现区别
 
+   响应式系统基于ES6的Proxy实现，核心在于拦截对象的属性读取和修改操作
+
+   
+
 2. ### 如何实现⼀个简易版的 Vue 3 响应式系统，解释 effect  、 track  和 trigger  的⼯作原理 
 
 3. ### Vue 3 中的 Proxy 与 Vue 2 中的 Object.defineProperty 在性能和功能上的对⽐分析
