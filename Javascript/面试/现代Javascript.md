@@ -1,0 +1,3 @@
+# 现代 JavaScript 与 TypeScript 
+
+ 5.1 ECMAScript 新特性  1. ES2022-2025 新特性深度解析与实际应⽤ 2.  深⼊理解装饰器 (Decorators) 提案及其实现原理 3. TC39 提案流程与 JavaScript 未来发展⽅向 4. ESM 与 CommonJS 模块系统的区别与兼容处理 5. JavaScript 中的元编程技术详解 6. Symbol 与 Well-Known Symbols 的⾼级应⽤ 7. Records & Tuples 提案解析及其对不可变数据的影响 5.2 TypeScript ⾼级特性  1. TypeScript 类型系统的设计哲学与⼯作原理 2.  条件类型与分布式条件类型的⾼级应⽤ 3.  类型编程：使⽤ TypeScript 类型系统构建复杂类型 4.  映射类型与索引访问类型的⾼级应⽤ 5. TypeScript 中的协变与逆变深度解析 6.  类型推断机制与控制流分析 7. TypeScript 编译器架构与类型检查实现原理 5.3 JavaScript 元编程  1. Proxy 与 Reflect API 的底层原理及⾼级应⽤ 2. Symbol 在元编程中的应⽤及内部原理 3.  元属性 (Meta Properties) 及其在框架设计中的作⽤ 4.  实现 JavaScript 对象的深度观察与变更追踪 5.  ⾃定义 JS 语⾔特性：运算符重载与⾃定义控制结构 6.  使⽤元编程实现数据验证与转换系统 7.  元编程在框架开发中的实际应⽤
